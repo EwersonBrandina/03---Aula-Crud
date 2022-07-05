@@ -18,7 +18,7 @@ class CRUD:
         'insert into pessoas' 
         '(nome, dataNasc)'
         'value '
-        '(%s, %s)'
+        '("Ewerson Ribeiro Brandina", "1993-03-17")'
         )
         #Edita o banco de dados
         self.conexao.commit() 
@@ -35,7 +35,11 @@ class CRUD:
         self.meu_cursor.execute(comando_sql)
         self.conexao.commit() 
     def delete(self):
+        self.read()
         valor=input('Insira o ID\n : ')
         comando_sql = f'delete from pessoas where id = {valor}'
         self.meu_cursor.execute(comando_sql)
         self.conexao.commit()
+
+objeto = CRUD()
+objeto.delete()
