@@ -1,45 +1,47 @@
-#AULA CRUD
-# 1º Inserção, 2º Leitura, 3º Atualização, 4º Apagar (1º Insert, 2º Read, 3º Update, 4º Delete)
 import mysql.connector
-#Criando a conecção com o banco de dados, com informações do banco de dados
-class CRUD:
+
+class BancoDeDados:
     def __init__(self):
         self.conexao = mysql.connector.connect(
             host='localhost',
             user='root',
             password='q1w2e3',
             database='aula_crud'
-            )
-        #Criar objeto para manipular o mysql
-        self.meu_cursor = self.conexao.cursor()
-    def create(self):
-        #CREATE
-        self.meu_cursor.execute(
-        'insert into pessoas' 
-        '(nome, dataNasc)'
-        'value '
-        '("Ewerson Ribeiro Brandina", "1993-03-17")'
         )
-        #Edita o banco de dados
-        self.conexao.commit() 
-    def read(self):
-        #Métdo execute serve para executar comandos SQL
-        self.meu_cursor.execute('select * from pessoas')
-        #Esse método, fetchall, é como se fosse um replace, serve para organizar as informações
-        lista = self.meu_cursor.fetchall()
-        #Para imprimir linha a linha
-        for i in lista:
-            print(i)
-    def update(self):
-        comando_sql = 'update pessoas set nome  = "Bruna Bianca Coelho Lopes" where id = 2'
-        self.meu_cursor.execute(comando_sql)
-        self.conexao.commit() 
-    def delete(self):
-        self.read()
-        valor=input('Insira o ID\n : ')
-        comando_sql = f'delete from pessoas where id = {valor}'
-        self.meu_cursor.execute(comando_sql)
+        self.meu_cursor = self.conexao.cursor()
+
+    # CRUD
+    # C
+    def create(self):
+        nome = input('Informe o nome: ')
+        data = input('Informa a data de Nascimento AAAA-MM-DD: ')
+        sql = f'insert into pessoas (nome, dataNasc) value ("{nome}", "{data}")'
+        self.meu_cursor.execute(sql)
         self.conexao.commit()
 
-objeto = CRUD()
-objeto.delete()
+    # R
+    def read(self):
+        self.meu_cursor.execute('select * from pessoas')
+        lista = self.meu_cursor.fetchall()
+        for i in lista:
+            print(i)
+
+    # U
+    def update(self):
+        cod = int(input('Informe o id da pessoa: '))
+        nome = input('Informe o novo nome: ')
+        sql = f'update pessoas set nome = "{nome}" where id = {cod}'
+        self.meu_cursor.execute(sql)
+        self.conexao.commit()
+
+    # D
+    def delete(self):
+        cod = int(input('Infome o id da pessoa: '))
+        sql = f'delete from pessoas where id = {cod}'
+        self.meu_cursor.execute(sql)
+        self.conexao.commit()
+
+
+obj_db = BancoDeDados()
+
+obj_db.read()
